@@ -7,6 +7,8 @@ const { tokenSign } = require('../helpers/generateToken')
 const register = async (req, res) => {
     try{
         req = matchedData(req)
+        const email = req.email.toLowerCase()
+        req = {...req, email}
         const searchUser = await searchUserEmail(req.email)
         if(searchUser){
             handleHttpError(res, 'Email already exists')
@@ -14,7 +16,7 @@ const register = async (req, res) => {
         }
 
         const password = await encrypt(req.password)
-        const email = req.email.toLowerCase()
+        //const email = req.email.toLowerCase()
 
         const body = { ...req, password, email }
         const user = await registerUser(body)
@@ -32,7 +34,7 @@ const login = async (req, res) => {
         req = matchedData(req)
         const user = await loginUser(req.email.toLowerCase())
         if(!user){
-            handleHttpError(res, 'User not exists', 404)
+            handleHttpError(res, 'User not exists', 401)
             return
         }
 

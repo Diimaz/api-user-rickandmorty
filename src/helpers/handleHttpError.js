@@ -1,4 +1,4 @@
-const handleHttpError = (res, message='Ocurrio algo', code=403) => {
+const handleHttpError = (res, message='Not found', code=404) => {
     res.status(code)
     res.send({error: message})
 }
