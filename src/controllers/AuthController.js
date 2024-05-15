@@ -14,8 +14,9 @@ const register = async (req, res) => {
         }
 
         const password = await encrypt(req.password)
+        const email = req.email.toLowerCase()
 
-        const body = { ...req, password }
+        const body = { ...req, password, email }
         const user = await registerUser(body)
         user.set('password', undefined, {strict: false})
         res.send({user})
@@ -29,7 +30,7 @@ const register = async (req, res) => {
 const login = async (req, res) => {
     try{
         req = matchedData(req)
-        const user = await loginUser(req.email)
+        const user = await loginUser(req.email.toLowerCase())
         if(!user){
             handleHttpError(res, 'User not exists', 404)
             return
